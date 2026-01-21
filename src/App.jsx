@@ -7,9 +7,27 @@ function App() {
   const [tasks, setTasks] = useState(
     JSON.parse(localStorage.getItem("tasks")) || [],
   );
+
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   }, [tasks]);
+
+  useEffect(() => {
+    async function fetchTasks() {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos?_limit=10",
+        {
+          method: "GET",
+        },
+      );
+
+      const data = await response.json();
+
+      // OPÇÃO QUE PERMITE IMPLEMENTAR O USO DE UMA API
+      //setTasks(data);
+    }
+    fetchTasks();
+  }, []);
 
   function onTaskClick(taskId) {
     const newTasks = tasks.map((task) => {
